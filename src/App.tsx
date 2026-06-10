@@ -34,7 +34,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if (screen === 'home' || screen === 'recommendations') {
+    if (screen === 'home') {
       releaseCameraStream()
     }
   }, [screen])
