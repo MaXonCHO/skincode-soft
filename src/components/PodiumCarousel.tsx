@@ -1,4 +1,4 @@
-import { useRef, useState, type TouchEvent, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type TouchEvent, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 
 interface PodiumCarouselProps<T> {
@@ -21,8 +21,23 @@ export function PodiumCarousel<T>({
   const containerRef = useRef<HTMLDivElement>(null)
   const dragStartX = useRef(0)
   const [isDragging, setIsDragging] = useState(false)
+  const [containerWidth, setContainerWidth] = useState(0)
 
   const totalWidth = cardWidth + cardGap
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const update = () => setContainerWidth(el.offsetWidth)
+    update()
+
+    const observer = new ResizeObserver(update)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const centerOffset = containerWidth / 2 - cardWidth / 2 - selectedIndex * totalWidth
 
   const handleDragEnd = (deltaX: number) => {
     const threshold = cardWidth * 0.25
@@ -57,8 +72,6 @@ export function PodiumCarousel<T>({
     setIsDragging(false)
   }
 
-  const offset = -(selectedIndex * totalWidth)
-
   return (
     <div
       ref={containerRef}
@@ -72,15 +85,15 @@ export function PodiumCarousel<T>({
       <div className="podium-carousel__track">
         <motion.div
           className="podium-carousel__inner"
-          animate={{ x: offset }}
+          animate={{ x: centerOffset }}
           transition={{ type: 'spring', stiffness: 300, damping: 30 }}
         >
           {items.map((item, index) => {
             const distance = Math.abs(index - selectedIndex)
             const isCenter = index === selectedIndex
-            const scale = isCenter ? 1 : distance === 1 ? 0.82 : 0.68
-            const opacity = isCenter ? 1 : distance === 1 ? 0.7 : 0.4
-            const translateY = isCenter ? 0 : distance === 1 ? 16 : 32
+            const scale = isCenter ? 1 : distance === 1 ? 0.88 : 0.76
+            const opacity = isCenter ? 1 : distance === 1 ? 0.55 : 0.3
+            const translateY = isCenter ? 0 : distance === 1 ? 8 : 16
 
             return (
               <motion.div
@@ -116,14 +129,13 @@ export function PodiumCarousel<T>({
           touch-action: pan-y;
         }
         .podium-carousel__track {
-          display: flex;
-          justify-content: center;
-          overflow: visible;
-          padding: 20px 0 8px;
+          overflow: hidden;
+          padding: 12px 0 4px;
         }
         .podium-carousel__inner {
           display: flex;
           align-items: flex-end;
+          will-change: transform;
         }
         .podium-carousel__item {
           flex-shrink: 0;
@@ -133,23 +145,23 @@ export function PodiumCarousel<T>({
         .podium-carousel__dots {
           display: flex;
           justify-content: center;
-          gap: 10px;
-          margin-top: 16px;
+          gap: 8px;
+          margin-top: 12px;
         }
         .podium-carousel__dot {
-          width: 10px;
-          height: 10px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
-          border: none;
-          background: rgba(180, 160, 220, 0.3);
+          border: 1px solid var(--border-color, #000);
+          background: transparent;
           cursor: pointer;
           padding: 0;
           transition: all 0.3s ease;
         }
         .podium-carousel__dot--active {
-          background: linear-gradient(135deg, #b8a0e0, #e0a0c8);
-          width: 28px;
-          border-radius: 5px;
+          background: #000;
+          width: 24px;
+          border-radius: 4px;
         }
       `}</style>
     </div>

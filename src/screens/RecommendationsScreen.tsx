@@ -136,20 +136,21 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           border-radius: 28px;
           padding: 28px 24px;
           text-align: center;
-          border: 1px solid rgba(255,255,255,0.9);
+          border: 1px solid var(--border-light);
           position: relative;
         }
         .product-card--center {
           background: rgba(255,255,255,0.95);
-          box-shadow: 0 20px 60px rgba(180, 160, 220, 0.2);
+          border-color: #000;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           padding: 32px 28px;
         }
         .product-card__match {
           position: absolute;
           top: 16px;
           right: 16px;
-          background: linear-gradient(135deg, #b8a0e0, #e0a0c8);
-          color: white;
+          background: #000;
+          color: #fff;
           font-size: 14px;
           font-weight: 700;
           padding: 6px 14px;
@@ -197,10 +198,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           font-size: 22px;
           font-weight: 700;
           margin-bottom: 12px;
-          background: linear-gradient(135deg, #b8a0e0, #e0a0c8);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #000;
         }
         .product-card__desc {
           font-size: 14px;
@@ -226,7 +224,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           display: block;
           margin: 16px auto 40px;
           background: none;
-          border: 2px solid rgba(184, 160, 224, 0.4);
+          border: 1px solid #000;
           border-radius: 40px;
           padding: 16px 48px;
           font-family: inherit;
@@ -238,7 +236,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           transition: all 0.2s ease;
         }
         .recommendations-screen__restart:hover {
-          border-color: #b8a0e0;
+          background: #f5f5f5;
           color: var(--text-primary);
         }
       `}</style>

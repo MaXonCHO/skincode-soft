@@ -93,7 +93,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           position: absolute;
           inset: -20px;
           border-radius: inherit;
-          background: linear-gradient(135deg, rgba(184,160,224,0.2), rgba(224,160,200,0.15));
+          background: rgba(0, 0, 0, 0.06);
           z-index: -1;
           filter: blur(30px);
         }
@@ -115,7 +115,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #b8a0e0, #e0a0c8);
+          background: #000;
           animation: pulse 2s ease-in-out infinite;
         }
         @keyframes pulse {
@@ -131,10 +131,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           line-height: 1.1;
           letter-spacing: 0.04em;
           margin-bottom: 28px;
-          background: linear-gradient(135deg, #1a1a2e 0%, #4a4a6a 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #000;
         }
         .home-screen__subtitle {
           font-size: var(--font-md);

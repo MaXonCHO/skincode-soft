@@ -118,7 +118,7 @@ export function SlideToScan({ onComplete, disabled = false }: SlideToScanProps) 
           top: 4px;
           bottom: 4px;
           border-radius: 40px;
-          background: linear-gradient(90deg, rgba(184,160,224,0.4), rgba(224,160,200,0.3));
+          background: rgba(0, 0, 0, 0.08);
           pointer-events: none;
         }
         .slide-to-scan__label {
@@ -140,11 +140,11 @@ export function SlideToScan({ onComplete, disabled = false }: SlideToScanProps) 
           top: 50%;
           margin-top: -36px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #b8a0e0, #e0a0c8);
+          background: #000;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 20px rgba(180, 160, 220, 0.5);
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
           z-index: 2;
         }
         .slide-to-scan--done .slide-to-scan__track {

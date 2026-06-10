@@ -7,16 +7,14 @@
 }
 
 :root {
-  --bg-white: #fafafa;
-  --lavender: #e8e0f5;
-  --blue: #d4e8f8;
-  --pink: #f8e0ec;
-  --text-primary: #1a1a2e;
-  --text-secondary: #6b6b8a;
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.8);
-  --glow-lavender: rgba(180, 160, 220, 0.5);
-  --glow-pink: rgba(240, 180, 210, 0.4);
+  --bg-white: #ffffff;
+  --bg-soft: #f5f5f5;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #000000;
+  --border-light: #e0e0e0;
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(0, 0, 0, 0.12);
   --space-sm: clamp(12px, 1.5vw, 24px);
   --space-md: clamp(24px, 3vw, 48px);
   --space-lg: clamp(40px, 5vw, 80px);
@@ -70,50 +68,65 @@ body {
 }
 
 .beauty-gradient {
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 30%, var(--lavender) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 50% at 80% 20%, var(--blue) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 60% at 60% 80%, var(--pink) 0%, transparent 70%),
-    var(--bg-white);
+  background: var(--bg-white);
 }
 
 .glass {
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--border-light);
   border-radius: 24px;
 }
 
-.glow-button {
+.glow-button,
+.btn-primary {
   position: relative;
-  border: none;
+  border: 1px solid var(--border-color);
   cursor: pointer;
   font-family: inherit;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: white;
-  background: linear-gradient(135deg, #b8a0e0 0%, #e0a0c8 50%, #a0c8e8 100%);
+  color: #fff;
+  background: #000;
   border-radius: 60px;
-  padding: clamp(18px, 2vw, 28px) clamp(48px, 6vw, 80px);
-  font-size: clamp(16px, 1.6vw, 22px);
-  box-shadow:
-    0 8px 32px var(--glow-lavender),
-    0 4px 16px var(--glow-pink),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: clamp(14px, 1.6vw, 22px) clamp(40px, 5vw, 64px);
+  font-size: clamp(14px, 1.3vw, 18px);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.glow-button:hover {
-  transform: scale(1.03);
-  box-shadow:
-    0 12px 48px var(--glow-lavender),
-    0 6px 24px var(--glow-pink),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+.glow-button:hover,
+.btn-primary:hover {
+  transform: scale(1.02);
+  background: #222;
 }
 
-.glow-button:active {
+.glow-button:active,
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000;
+  background: #fff;
+  border-radius: 60px;
+  padding: clamp(14px, 1.6vw, 22px) clamp(32px, 4vw, 48px);
+  font-size: clamp(14px, 1.3vw, 18px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #f5f5f5;
+}
+
+.btn-secondary:active {
   transform: scale(0.98);
 }
 
