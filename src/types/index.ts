@@ -33,6 +33,7 @@ export interface UndertoneOption {
   label: string
   description: string
   color: string
+  image: string
 }
 
 export interface SkinTypeOption {
@@ -40,4 +41,5 @@ export interface SkinTypeOption {
   label: string
   description: string
   color: string
+  image: string
 }

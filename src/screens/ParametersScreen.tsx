@@ -72,10 +72,14 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
                 cardGap={16}
                 renderCard={(item, isCenter) => (
                   <div className={`option-card ${isCenter ? 'option-card--center' : ''}`}>
-                    <div
-                      className="option-card__swatch"
-                      style={{ background: item.color }}
-                    />
+                    <div className="option-card__image-frame">
+                      <img
+                        className="option-card__image option-card__image--tone"
+                        src={item.image}
+                        alt={`${item.label} подтон`}
+                        draggable={false}
+                      />
+                    </div>
                     <span className="option-card__label">{item.label}</span>
                     {isCenter && (
                       <span className="option-card__desc">{item.description}</span>
@@ -111,7 +115,14 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
                 cardGap={16}
                 renderCard={(item, isCenter) => (
                   <div className={`option-card ${isCenter ? 'option-card--center' : ''}`}>
-                    <div className="option-card__swatch option-card__swatch--type" />
+                    <div className="option-card__image-frame">
+                      <img
+                        className="option-card__image"
+                        src={item.image}
+                        alt={`${item.label} тип кожи`}
+                        draggable={false}
+                      />
+                    </div>
                     <span className="option-card__label">{item.label}</span>
                     {isCenter && (
                       <span className="option-card__desc">{item.description}</span>
@@ -191,12 +202,14 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           left: 50%;
           transform: translateX(-50%);
           width: min(92vw, 640px);
-          background: #fff;
-          border: 1px solid #000;
+          background: rgba(255, 255, 255, 0.68);
+          backdrop-filter: blur(28px) saturate(150%);
+          -webkit-backdrop-filter: blur(28px) saturate(150%);
+          border: 1px solid rgba(255, 255, 255, 0.8);
           border-radius: 20px;
           padding: clamp(16px, 2vw, 24px) clamp(20px, 2.5vw, 32px);
           z-index: 15;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 18px 48px rgba(35, 28, 48, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.85);
         }
         .parameters-screen__step {
           display: flex;
@@ -229,27 +242,43 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           flex: 0 1 auto;
         }
         .option-card {
-          background: #fff;
-          border-radius: 14px;
-          padding: 14px 12px;
+          height: 178px;
+          background: linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.4));
+          backdrop-filter: blur(18px) saturate(145%);
+          -webkit-backdrop-filter: blur(18px) saturate(145%);
+          border-radius: 18px;
+          padding: 10px 10px 12px;
           text-align: center;
-          border: 1px solid #e0e0e0;
+          border: 1px solid rgba(255, 255, 255, 0.82);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 10px 28px rgba(38, 28, 48, 0.1);
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .option-card--center {
-          border-color: #000;
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+          border-color: rgba(255, 255, 255, 0.95);
+          box-shadow: inset 0 1px 0 #fff, 0 14px 34px rgba(38, 28, 48, 0.18), 0 0 0 1px rgba(116, 99, 135, 0.16);
         }
-        .option-card__swatch {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          margin: 0 auto 10px;
-          border: 1px solid #000;
+        .option-card__image-frame {
+          width: 100%;
+          height: 104px;
+          margin: 0 auto 9px;
+          overflow: hidden;
+          border-radius: 13px;
+          background: rgba(255, 255, 255, 0.38);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.78);
+          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
         }
-        .option-card__swatch--type {
-          border-radius: 12px;
-          background: #f5f5f5;
+        .option-card__image {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+          pointer-events: none;
+        }
+        .option-card__image--tone {
+          object-fit: contain;
+          object-position: center bottom;
         }
         .option-card__label {
           display: block;
