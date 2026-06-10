@@ -1,0 +1,132 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-white: #fafafa;
+  --lavender: #e8e0f5;
+  --blue: #d4e8f8;
+  --pink: #f8e0ec;
+  --text-primary: #1a1a2e;
+  --text-secondary: #6b6b8a;
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.8);
+  --glow-lavender: rgba(180, 160, 220, 0.5);
+  --glow-pink: rgba(240, 180, 210, 0.4);
+  --space-sm: clamp(12px, 1.5vw, 24px);
+  --space-md: clamp(24px, 3vw, 48px);
+  --space-lg: clamp(40px, 5vw, 80px);
+  --space-xl: clamp(60px, 7vw, 120px);
+  --font-sm: clamp(14px, 1.2vw, 18px);
+  --font-md: clamp(18px, 1.8vw, 24px);
+  --font-lg: clamp(28px, 3vw, 40px);
+  --font-xl: clamp(40px, 4.5vw, 64px);
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-white);
+}
+
+.app-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-white);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.beauty-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 30%, var(--lavender) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, var(--blue) 0%, transparent 70%),
+    radial-gradient(ellipse 70% 60% at 60% 80%, var(--pink) 0%, transparent 70%),
+    var(--bg-white);
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+}
+
+.glow-button {
+  position: relative;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  background: linear-gradient(135deg, #b8a0e0 0%, #e0a0c8 50%, #a0c8e8 100%);
+  border-radius: 60px;
+  padding: clamp(18px, 2vw, 28px) clamp(48px, 6vw, 80px);
+  font-size: clamp(16px, 1.6vw, 22px);
+  box-shadow:
+    0 8px 32px var(--glow-lavender),
+    0 4px 16px var(--glow-pink),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glow-button:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 12px 48px var(--glow-lavender),
+    0 6px 24px var(--glow-pink),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.glow-button:active {
+  transform: scale(0.98);
+}
+
+.logo {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-lg);
+  height: clamp(32px, 4vw, 48px);
+  width: auto;
+  object-fit: contain;
+  z-index: 20;
+}
+
+.logo--light {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.25));
+}
