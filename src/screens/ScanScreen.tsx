@@ -116,9 +116,9 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
         {phase === 'analyzing' && (
           <motion.div
             className="scan-screen__analysis"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <AnalysisProgress currentStep={analysisStep} faceBox={faceBox} />
           </motion.div>
@@ -246,9 +246,9 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           justify-content: center;
           gap: 10px;
           border-radius: 28px;
-          background: rgba(255,255,255,.2);
+          background: rgba(255,255,255,.28);
           color: #fff;
-          border: 1px solid rgba(255,255,255,.32);
+          border: 1px solid rgba(255,255,255,.46);
           backdrop-filter: blur(24px) saturate(145%);
           box-shadow: 0 16px 44px rgba(0,0,0,.18);
           overflow: hidden;
@@ -303,7 +303,7 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           z-index: 16;
           padding: 8px 14px;
           border-radius: 20px;
-          background: rgba(255,255,255,.22);
+          background: rgba(255,255,255,.3);
           color: rgba(255,255,255,.8);
           font-size: 11px;
           backdrop-filter: blur(18px);

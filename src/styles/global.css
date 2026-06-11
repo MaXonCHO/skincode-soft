@@ -20,8 +20,8 @@
   --text-secondary: var(--color-muted);
   --border-color: var(--color-primary);
   --border-light: rgba(131, 24, 67, 0.16);
-  --glass-bg: rgba(255, 255, 255, 0.3);
-  --glass-border: rgba(255, 255, 255, 0.62);
+  --glass-bg: rgba(255, 255, 255, 0.38);
+  --glass-border: rgba(255, 255, 255, 0.72);
   --shadow-soft: 0 16px 42px rgba(83, 38, 73, 0.14);
   --motion-fast: 220ms;
   --motion-smooth: 500ms;
@@ -154,8 +154,8 @@ body {
   position: absolute;
   top: var(--space-md);
   left: var(--space-lg);
-  height: clamp(32px, 4vw, 48px);
-  width: auto;
+  width: clamp(210px, 24vw, 360px);
+  height: auto;
   object-fit: contain;
   z-index: 20;
 }

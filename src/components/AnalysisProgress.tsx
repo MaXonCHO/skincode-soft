@@ -28,7 +28,7 @@ export function AnalysisProgress({ currentStep, faceBox }: AnalysisProgressProps
           <motion.div
             key={step.key}
             className="analysis-callout-point"
-            initial={{ opacity: 0 }}
+            initial={{ left: `${left}%`, top: `${top}%`, opacity: 0 }}
             animate={{ left: `${left}%`, top: `${top}%`, opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{
@@ -87,10 +87,10 @@ export function AnalysisProgress({ currentStep, faceBox }: AnalysisProgressProps
           padding: 10px 13px;
           border: 1px solid rgba(255,255,255,.54);
           border-radius: 15px;
-          background: rgba(255,255,255,.18);
+          background: rgba(255,255,255,.26);
           color: #fff;
           backdrop-filter: blur(20px) saturate(150%);
-          box-shadow: 0 12px 30px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.45);
+          box-shadow: 0 12px 30px rgba(0,0,0,.14), inset 0 1px 0 rgba(255,255,255,.58);
         }
         .analysis-callout--left {
           right: 44px;

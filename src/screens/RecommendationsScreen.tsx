@@ -157,7 +157,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           content: '';
           position: absolute;
           inset: 0;
-          background: rgba(255, 255, 255, 0.14);
+          background: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(42px);
           pointer-events: none;
         }
@@ -179,8 +179,8 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           justify-self: end;
           padding: 8px;
           border-radius: 25px;
-          background: rgba(255, 255, 255, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.5);
+          background: rgba(255, 255, 255, 0.3);
+          border: 1px solid rgba(255, 255, 255, 0.64);
           box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 18px 46px rgba(72, 45, 78, 0.16);
           backdrop-filter: blur(24px) saturate(145%);
           -webkit-backdrop-filter: blur(24px) saturate(145%);
@@ -240,7 +240,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           padding: 8px 10px;
           min-width: 0;
           border-radius: 14px;
-          background: rgba(255,255,255,.2);
+          background: rgba(255,255,255,.3);
           border: 1px solid rgba(255,255,255,.48);
         }
         .recommendations-screen__profile-label {
@@ -272,7 +272,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         }
         .product-card {
           height: clamp(330px, 43vh, 410px);
-          background: rgba(255,255,255,.24);
+          background: rgba(255,255,255,.34);
           backdrop-filter: blur(26px) saturate(140%);
           -webkit-backdrop-filter: blur(26px) saturate(140%);
           border-radius: 32px;
@@ -283,7 +283,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           box-shadow: inset 0 1px 0 rgba(255,255,255,.86), 0 20px 50px rgba(62, 36, 72, .14);
         }
         .product-card--center {
-          background: rgba(255,255,255,.34);
+          background: rgba(255,255,255,.44);
           border-color: rgba(255,255,255,.9);
           box-shadow: inset 0 1px 0 white, 0 26px 66px rgba(62, 36, 72, .2);
         }
@@ -366,7 +366,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         .product-card__description,
         .product-card__score {
           border-radius: 20px;
-          background: rgba(255,255,255,.22);
+          background: rgba(255,255,255,.32);
           border: 1px solid rgba(255,255,255,.5);
           box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
         }
@@ -395,7 +395,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           font-size: 10px;
           padding: 4px 7px;
           border-radius: 20px;
-          background: rgba(255,255,255,.26);
+          background: rgba(255,255,255,.36);
           color: rgba(20,20,20,.6);
           text-transform: uppercase;
           letter-spacing: 0.06em;

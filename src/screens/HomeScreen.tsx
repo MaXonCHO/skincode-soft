@@ -156,20 +156,22 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
             bottom: var(--space-md);
             z-index: 3;
             max-width: none;
-            padding: clamp(24px, 5vw, 42px);
-            border: 1px solid rgba(255,255,255,.42);
-            border-radius: 28px;
-            background: rgba(0,0,0,.28);
+            padding: clamp(8px, 2vw, 16px);
+            border: 0;
+            border-radius: 0;
+            background: transparent;
             color: #fff;
-            backdrop-filter: blur(28px) saturate(120%);
+            backdrop-filter: none;
           }
           .home-screen__title {
             color: #fff;
             font-size: clamp(42px, 9vw, 72px);
+            text-shadow: 0 3px 18px rgba(0,0,0,.42);
           }
           .home-screen__subtitle {
             color: rgba(255,255,255,.78);
             margin-bottom: 28px;
+            text-shadow: 0 2px 12px rgba(0,0,0,.5);
           }
           .home-screen__cta .slide-to-scan__track,
           .home-screen__cta .slide-to-scan__thumb {

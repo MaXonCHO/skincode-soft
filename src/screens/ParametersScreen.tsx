@@ -52,6 +52,20 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
 
       <Logo variant="light" />
 
+      <div className="parameters-screen__header">
+        <AnimatePresence mode="wait">
+          <motion.h3
+            key={step}
+            className="parameters-screen__title"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+          >
+            {step === 'undertone' ? 'Выберите свой подтон' : 'Выберите тип кожи'}
+          </motion.h3>
+        </AnimatePresence>
+      </div>
+
       <div className="parameters-screen__panel">
         <AnimatePresence mode="wait">
           {step === 'undertone' && (
@@ -63,7 +77,6 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="parameters-screen__title">Выберите свой подтон</h3>
               <PodiumCarousel
                 items={undertoneOptions}
                 selectedIndex={undertoneIndex}
@@ -105,7 +118,6 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h3 className="parameters-screen__title">Выберите тип кожи</h3>
               <PodiumCarousel
                 items={skinTypeOptions}
                 selectedIndex={skinTypeIndex}
@@ -202,6 +214,15 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           padding: 0;
           z-index: 15;
         }
+        .parameters-screen__header {
+          position: absolute;
+          top: calc(var(--space-md) + clamp(40px, 5vw, 56px));
+          left: 0;
+          right: 0;
+          z-index: 15;
+          text-align: center;
+          pointer-events: none;
+        }
         .parameters-screen__step {
           display: flex;
           flex-direction: column;
@@ -212,7 +233,7 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           font-size: var(--font-lg);
           font-weight: 600;
           text-align: center;
-          margin-bottom: 14px;
+          margin-bottom: 0;
           color: #fff;
           letter-spacing: .06em;
           text-shadow: 0 2px 12px rgba(0,0,0,.4);
@@ -237,14 +258,14 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
         .option-card {
           height: 242px;
           font-family: inherit;
-          background: rgba(0,0,0,.28);
+          background: rgba(255,255,255,.22);
           backdrop-filter: blur(18px) saturate(145%);
           -webkit-backdrop-filter: blur(18px) saturate(145%);
           border-radius: 18px;
           padding: 12px 12px 15px;
           text-align: center;
           border: 1px solid rgba(255,255,255,.42);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 12px 30px rgba(0,0,0,.16);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 12px 30px rgba(0,0,0,.14);
           transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
         .option-card--center {
@@ -257,7 +278,7 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           margin: 0 auto 11px;
           overflow: hidden;
           border-radius: 13px;
-          background: rgba(255,255,255,.12);
+          background: rgba(255,255,255,.2);
           backdrop-filter: blur(12px);
           -webkit-backdrop-filter: blur(12px);
           border: 1px solid rgba(255,255,255,.46);

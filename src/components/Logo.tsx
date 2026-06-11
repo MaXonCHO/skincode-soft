@@ -1,3 +1,5 @@
+import logoImage from '../../photo/logo.png'
+
 interface LogoProps {
   variant?: 'default' | 'light'
 }
@@ -5,7 +7,7 @@ interface LogoProps {
 export function Logo({ variant = 'default' }: LogoProps) {
   return (
     <img
-      src="/logo.png"
+      src={logoImage}
       alt="SkinCode"
       className={`logo ${variant === 'light' ? 'logo--light' : ''}`}
     />
