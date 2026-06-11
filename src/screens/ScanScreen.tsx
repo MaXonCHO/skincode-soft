@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Logo } from '../components/Logo'
 import { FaceOverlay } from '../components/FaceOverlay'
-import { SlideToScan } from '../components/SlideToScan'
 import { AnalysisProgress } from '../components/AnalysisProgress'
 import { useCameraStream } from '../hooks/useCameraStream'
 import { useFaceDetection } from '../hooks/useFaceDetection'
@@ -12,6 +11,7 @@ interface ScanScreenProps {
 }
 
 type ScanPhase = 'preview' | 'scanning' | 'analyzing'
+const HOLD_DURATION = 1800
 
 export function ScanScreen({ onComplete }: ScanScreenProps) {
   const { videoRef, hasCamera, error: cameraError } = useCameraStream(true)
@@ -23,6 +23,10 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
   } = useFaceDetection(videoRef, hasCamera)
   const [phase, setPhase] = useState<ScanPhase>('preview')
   const [analysisStep, setAnalysisStep] = useState(0)
+  const [holdProgress, setHoldProgress] = useState(0)
+
+  const alignment = useMemo(() => getFaceAlignment(faceBox), [faceBox])
+  const faceCentered = faceDetected && alignment.centered
 
   useEffect(() => {
     if (phase !== 'analyzing') return
@@ -38,10 +42,39 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
     return () => timers.forEach(clearTimeout)
   }, [phase, onComplete])
 
-  const handleScanStart = () => {
+  const handleScanStart = useCallback(() => {
     setPhase('scanning')
     setTimeout(() => setPhase('analyzing'), 2000)
-  }
+  }, [])
+
+  useEffect(() => {
+    if (phase !== 'preview' || !faceCentered) {
+      setHoldProgress(0)
+      return
+    }
+
+    const startedAt = performance.now()
+    const timer = window.setInterval(() => {
+      const progress = Math.min(100, ((performance.now() - startedAt) / HOLD_DURATION) * 100)
+      setHoldProgress(progress)
+      if (progress >= 100) {
+        window.clearInterval(timer)
+        handleScanStart()
+      }
+    }, 50)
+
+    return () => window.clearInterval(timer)
+  }, [faceCentered, handleScanStart, phase])
+
+  const prompt = phase === 'preview'
+    ? detectionError
+      ? 'Не удалось запустить распознавание лица'
+      : detectionReady
+      ? alignment.prompt
+      : 'Подготавливаем распознавание лица'
+    : phase === 'scanning'
+      ? 'Сохраняйте положение'
+      : 'Анализируем параметры кожи'
 
   return (
     <div className="screen scan-screen">
@@ -62,9 +95,10 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
         <div className="scan-screen__overlay" />
         <FaceOverlay
           scanning={phase === 'scanning' || phase === 'analyzing'}
-          showLandmarks={phase !== 'preview'}
+          showLandmarks
           faceBox={faceBox}
           detected={faceDetected}
+          centered={faceCentered}
         />
       </div>
 
@@ -73,11 +107,7 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
       <div className="scan-screen__header">
         <h2 className="scan-screen__title">Сканирование кожи</h2>
         <p className="scan-screen__hint">
-          {faceDetected
-            ? 'Лицо найдено — можно начинать сканирование'
-            : detectionReady
-              ? 'Расположите лицо перед камерой'
-              : 'Подготавливаем распознавание лица'}
+          {prompt}
         </p>
       </div>
 
@@ -94,28 +124,31 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
         )}
       </AnimatePresence>
 
-      <div className="scan-screen__controls">
-        <AnimatePresence>
-          {phase === 'preview' && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-            >
-              <SlideToScan
-                onComplete={handleScanStart}
-                disabled={detectionReady && !faceDetected}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        {phase === 'preview' && (
+          <motion.div
+            key={prompt}
+            className={`scan-screen__guidance ${faceCentered ? 'scan-screen__guidance--ready' : ''}`}
+            initial={{ opacity: 0, y: 18, scale: .97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: .98 }}
+          >
+            <span className="scan-screen__guidance-dot" />
+            <strong>{prompt}</strong>
+            {faceCentered && (
+              <div className="scan-screen__hold">
+                <span style={{ width: `${holdProgress}%` }} />
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {cameraError && (
         <p className="scan-screen__error">Камера недоступна — демо-режим</p>
       )}
       {detectionError && !cameraError && (
-        <p className="scan-screen__detection-note">Распознавание недоступно — сканирование можно продолжить</p>
+        <p className="scan-screen__detection-note">Проверьте подключение и обновите страницу</p>
       )}
 
       <style>{`
@@ -181,16 +214,62 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           position: absolute;
           bottom: calc(var(--space-lg) + 80px);
           left: 50%;
-          transform: translateX(-50%);
+          translate: -50% 0;
           z-index: 15;
         }
-        .scan-screen__controls {
+        .scan-screen__guidance {
           position: absolute;
           bottom: var(--space-lg);
-          left: 0;
-          right: 0;
+          left: 50%;
+          transform: translateX(-50%);
           z-index: 15;
-          padding: 0 var(--space-md);
+          min-width: min(86vw, 380px);
+          padding: 16px 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          border-radius: 28px;
+          background: rgba(255,255,255,.2);
+          color: #fff;
+          border: 1px solid rgba(255,255,255,.32);
+          backdrop-filter: blur(24px) saturate(145%);
+          box-shadow: 0 16px 44px rgba(0,0,0,.18);
+          overflow: hidden;
+        }
+        .scan-screen__guidance strong {
+          font-size: 15px;
+          font-weight: 550;
+          letter-spacing: .01em;
+        }
+        .scan-screen__guidance-dot {
+          width: 9px;
+          height: 9px;
+          flex: 0 0 auto;
+          border-radius: 50%;
+          background: #ffbf7e;
+          box-shadow: 0 0 0 5px rgba(255,191,126,.16);
+        }
+        .scan-screen__guidance--ready .scan-screen__guidance-dot {
+          background: #7eecbe;
+          box-shadow: 0 0 0 5px rgba(126,236,190,.17);
+        }
+        .scan-screen__hold {
+          position: absolute;
+          left: 10px;
+          right: 10px;
+          bottom: 5px;
+          height: 3px;
+          border-radius: 3px;
+          overflow: hidden;
+          background: rgba(255,255,255,.16);
+        }
+        .scan-screen__hold span {
+          display: block;
+          height: 100%;
+          border-radius: inherit;
+          background: linear-gradient(90deg, #7eecbe, #d9ffed);
+          transition: width .08s linear;
         }
         .scan-screen__error {
           position: absolute;
@@ -216,4 +295,20 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
       `}</style>
     </div>
   )
+}
+
+function getFaceAlignment(faceBox: ReturnType<typeof useFaceDetection>['faceBox']) {
+  if (!faceBox) return { centered: false, prompt: 'Расположите лицо перед камерой' }
+
+  const centerX = faceBox.left + faceBox.width / 2
+  const centerY = faceBox.top + faceBox.height / 2
+
+  if (faceBox.width < 24) return { centered: false, prompt: 'Подойдите немного ближе' }
+  if (faceBox.width > 58) return { centered: false, prompt: 'Отойдите немного дальше' }
+  if (centerX < 42) return { centered: false, prompt: 'Сместитесь немного вправо' }
+  if (centerX > 58) return { centered: false, prompt: 'Сместитесь немного влево' }
+  if (centerY < 40) return { centered: false, prompt: 'Опустите лицо немного ниже' }
+  if (centerY > 62) return { centered: false, prompt: 'Поднимите лицо немного выше' }
+
+  return { centered: true, prompt: 'Отлично, сохраняйте положение' }
 }
