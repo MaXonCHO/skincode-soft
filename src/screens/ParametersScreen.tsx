@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PodiumCarousel } from '../components/PodiumCarousel'
 import { FaceOverlay } from '../components/FaceOverlay'
+import { RecommendationsQrCard } from '../components/RecommendationsQrCard'
 import { useCameraStream } from '../hooks/useCameraStream'
 import { undertoneOptions, skinTypeOptions } from '../data/options'
 import type { SkinProfile, SkinType, Undertone } from '../types'
@@ -115,28 +116,36 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
               exit={{ opacity: 0, y: -24 }}
               transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
             >
-              <PodiumCarousel
-                items={skinTypeOptions}
-                selectedIndex={skinTypeIndex}
-                onSelect={setSkinTypeIndex}
-                getItemLabel={(item) => item.label}
-                cardWidth={205}
-                cardGap={22}
-                renderCard={(item, isCenter) => (
-                  <div className={`option-card ${isCenter ? 'option-card--center' : ''}`}>
-                    <div className="option-card__image-frame">
-                      <img
-                        className="option-card__image"
-                        src={item.image}
-                        alt={`${item.label} тип кожи`}
-                        draggable={false}
-                      />
+              <div className="parameters-screen__selection-with-qr">
+                <PodiumCarousel
+                  items={skinTypeOptions}
+                  selectedIndex={skinTypeIndex}
+                  onSelect={setSkinTypeIndex}
+                  getItemLabel={(item) => item.label}
+                  cardWidth={205}
+                  cardGap={22}
+                  renderCard={(item, isCenter) => (
+                    <div className={`option-card ${isCenter ? 'option-card--center' : ''}`}>
+                      <div className="option-card__image-frame">
+                        <img
+                          className="option-card__image"
+                          src={item.image}
+                          alt={`${item.label} тип кожи`}
+                          draggable={false}
+                        />
+                      </div>
+                      <span className="option-card__label">{item.label}</span>
+                      <span className="option-card__desc">{item.description}</span>
                     </div>
-                    <span className="option-card__label">{item.label}</span>
-                    <span className="option-card__desc">{item.description}</span>
-                  </div>
-                )}
-              />
+                  )}
+                />
+                <RecommendationsQrCard
+                  profile={{
+                    undertone: selectedUndertone.id as Undertone,
+                    skinType: selectedSkinType.id as SkinType,
+                  }}
+                />
+              </div>
               <div className="parameters-screen__actions">
                 <button
                   className="btn-secondary parameters-screen__back"
@@ -265,6 +274,29 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
         .parameters-screen__actions .parameters-screen__action {
           margin-top: 0;
           flex: 0 1 auto;
+        }
+        .parameters-screen__selection-with-qr {
+          width: 100%;
+          display: flex;
+          align-items: flex-start;
+          gap: 16px;
+        }
+        .parameters-screen__selection-with-qr .podium-carousel {
+          min-width: 0;
+          flex: 1;
+        }
+        @media (max-width: 700px) {
+          .parameters-screen__selection-with-qr {
+            gap: 8px;
+          }
+          .recommendations-qr-card {
+            flex-basis: 142px;
+            height: 224px;
+          }
+          .recommendations-qr-card__code {
+            width: 112px;
+            height: 112px;
+          }
         }
         .option-card {
           height: 242px;
