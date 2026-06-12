@@ -215,16 +215,14 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           content: '';
           position: absolute;
           z-index: -1;
-          left: 4%;
-          right: 4%;
-          top: 4px;
-          bottom: 54px;
-          border-radius: 42px;
-          background: linear-gradient(180deg, rgba(255,255,255,.3), rgba(255,255,255,.1));
-          border: 1px solid rgba(255,255,255,.24);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.44);
+          left: 50%;
+          top: 38%;
+          width: min(138vw, 1440px);
+          height: clamp(280px, 46vh, 430px);
+          border-radius: 50%;
+          transform: translateX(-50%);
+          background: radial-gradient(ellipse at center, rgba(255,255,255,.48) 0%, rgba(255,255,255,.24) 42%, transparent 72%);
+          filter: blur(24px);
           pointer-events: none;
         }
         .parameters-screen__header {

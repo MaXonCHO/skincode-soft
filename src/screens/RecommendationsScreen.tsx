@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { PodiumCarousel } from '../components/PodiumCarousel'
-import { SlideToScan } from '../components/SlideToScan'
 import { useCameraStream } from '../hooks/useCameraStream'
 import { formatPrice, formatProductTag, formatProfileValue } from '../utils/matching'
 import type { ScoredProduct, SkinProfile } from '../types'
@@ -133,45 +132,41 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <SlideToScan
-          onComplete={onRestart}
-          label="Проведите, чтобы начать заново →"
-          completedLabel="Возвращаемся к началу..."
-        />
+        <motion.button
+          className="btn-primary recommendations-screen__restart-button"
+          onClick={onRestart}
+          whileTap={{ scale: .97 }}
+        >
+          Начать заново
+        </motion.button>
       </motion.div>
 
       <style>{`
         .recommendations-screen {
-          background:
-            radial-gradient(circle at 8% 88%, rgba(114, 211, 157, 0.58), transparent 29%),
-            radial-gradient(circle at 22% 12%, rgba(255, 123, 88, 0.52), transparent 31%),
-            radial-gradient(circle at 55% 4%, rgba(255, 171, 79, 0.48), transparent 29%),
-            radial-gradient(circle at 82% 18%, rgba(231, 123, 211, 0.5), transparent 34%),
-            radial-gradient(circle at 88% 84%, rgba(151, 112, 230, 0.55), transparent 35%),
-            #f8eef4;
+          background: #fff;
         }
         .recommendations-screen::before {
           content: '';
           position: absolute;
           inset: 0;
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(42px);
+          background: radial-gradient(ellipse at 50% 112%, rgba(238,220,238,.42), transparent 52%);
+          backdrop-filter: blur(24px);
           pointer-events: none;
         }
         .recommendations-screen__top {
           position: relative;
           z-index: 2;
           display: grid;
-          grid-template-columns: 1fr minmax(220px, 25vw);
+          grid-template-columns: 1fr minmax(170px, 18vw);
           align-items: start;
           gap: clamp(30px, 5vw, 84px);
           padding: 20px var(--space-lg) 0;
         }
         .recommendations-screen__camera-card {
           width: 100%;
-          max-width: 320px;
+          max-width: 220px;
           justify-self: end;
-          padding: 8px;
+          padding: 7px;
           border-radius: 25px;
           background: rgba(255, 255, 255, 0.3);
           border: 1px solid rgba(255, 255, 255, 0.64);
@@ -181,9 +176,11 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         }
         .recommendations-screen__camera {
           position: relative;
-          height: clamp(94px, 11vh, 124px);
+          width: clamp(66px, 6.2vw, 86px);
+          height: clamp(66px, 6.2vw, 86px);
+          margin: 0 auto;
           overflow: hidden;
-          border-radius: 18px;
+          border-radius: 50%;
           background: linear-gradient(135deg, #d6a6bb, #8d79ae);
         }
         .recommendations-screen__video {
@@ -209,8 +206,8 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           font-weight: 700;
           letter-spacing: .13em;
           text-transform: uppercase;
-          color: rgba(255, 255, 255, .78);
-          text-shadow: 0 2px 18px rgba(66, 37, 72, .18);
+          color: rgba(20,20,20,.52);
+          text-shadow: none;
         }
         .recommendations-screen__title {
           max-width: 760px;
@@ -218,20 +215,20 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           font-weight: 650;
           letter-spacing: -0.04em;
           line-height: .98;
-          color: #fff;
-          text-shadow: 0 4px 24px rgba(64, 35, 72, .2);
+          color: #171419;
+          text-shadow: none;
         }
         .recommendations-screen__profile {
           display: grid;
           grid-template-columns: 1fr;
-          gap: 7px;
+          gap: 5px;
           padding-top: 7px;
         }
         .recommendations-screen__profile-item {
           display: flex;
           flex-direction: column;
           gap: 1px;
-          padding: 8px 10px;
+          padding: 6px 8px;
           min-width: 0;
           border-radius: 14px;
           background: rgba(255,255,255,.3);
@@ -449,14 +446,16 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           position: absolute;
           z-index: 5;
           right: 18px;
-          left: 50%;
+          left: 18px;
           bottom: 14px;
-          width: 420px;
-          margin-left: -210px;
+          width: fit-content;
+          margin: 0 auto;
         }
-        .recommendations-screen__restart .slide-to-scan {
-          padding: 0;
-          max-width: none;
+        .recommendations-screen__restart-button {
+          background: rgba(255,255,255,.24);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 14px 34px rgba(72,45,78,.12);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
         }
         .recommendations-screen .podium-carousel__dots {
           margin-top: 6px;
@@ -467,7 +466,8 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         }
         @media (max-height: 720px) {
           .recommendations-screen__camera {
-            height: 100px;
+            width: 64px;
+            height: 64px;
           }
           .recommendations-screen__profile {
             display: none;

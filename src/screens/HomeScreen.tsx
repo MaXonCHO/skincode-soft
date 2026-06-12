@@ -64,8 +64,9 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           background: #fff;
         }
         .home-screen > .logo {
-          left: auto;
-          right: var(--space-lg);
+          left: var(--space-lg);
+          right: auto;
+          width: clamp(180px, 18vw, 280px);
         }
         .home-screen__visual {
           position: relative;
@@ -158,12 +159,14 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
             bottom: var(--space-md);
             z-index: 3;
             max-width: none;
-            padding: clamp(8px, 2vw, 16px);
+            padding: clamp(20px, 4vw, 32px);
             border: 0;
-            border-radius: 0;
-            background: transparent;
+            border-radius: 26px;
+            background: rgba(255,255,255,.22);
             color: #000;
-            backdrop-filter: none;
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.48);
           }
           .home-screen__title {
             color: #000;
