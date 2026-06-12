@@ -64,8 +64,9 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           background: #fff;
         }
         .home-screen > .logo {
-          left: var(--space-lg);
-          right: auto;
+          top: clamp(12px, 1.5vw, 22px);
+          left: auto;
+          right: clamp(18px, 2.6vw, 42px);
           width: clamp(180px, 18vw, 280px);
         }
         .home-screen__visual {
@@ -76,16 +77,16 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
         }
         .home-screen__image-wrapper {
           position: absolute;
-          inset: 0;
+          inset: 0 -4% 0 0;
           overflow: hidden;
         }
         .home-screen__image {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          object-position: center bottom;
-          transform: scale(1.04);
-          transform-origin: center bottom;
+          object-position: right bottom;
+          transform: scale(1.06);
+          transform-origin: right bottom;
         }
         .home-screen__text {
           align-self: center;
@@ -134,7 +135,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           color: rgba(0,0,0,.66);
         }
         .home-screen__cta .slide-to-scan__fill {
-          background: rgba(0,0,0,.08);
+          background: rgba(210,235,11,.18);
         }
         @media (orientation: portrait), (max-width: 900px) {
           .home-screen__content {
@@ -146,6 +147,9 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
             position: absolute;
             inset: 0;
             background: transparent;
+          }
+          .home-screen__image-wrapper {
+            inset: 0 -16% 0 0;
           }
           .home-screen__image {
             object-fit: contain;
@@ -161,12 +165,24 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
             max-width: none;
             padding: clamp(20px, 4vw, 32px);
             border: 0;
-            border-radius: 26px;
-            background: rgba(255,255,255,.22);
+            border-radius: 0;
+            background: transparent;
             color: #000;
-            backdrop-filter: blur(16px) saturate(120%);
-            -webkit-backdrop-filter: blur(16px) saturate(120%);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,.48);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: none;
+          }
+          .home-screen__text::before {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: -12vw;
+            right: -12vw;
+            top: -40px;
+            bottom: -18vh;
+            background: radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.86) 0%, rgba(255,255,255,.5) 45%, transparent 76%);
+            filter: blur(18px);
+            pointer-events: none;
           }
           .home-screen__title {
             color: #000;

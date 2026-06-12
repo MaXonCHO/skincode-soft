@@ -38,7 +38,7 @@ export function FaceOverlay({
     : { left: '22.5%', top: '14%', width: '55%', height: '72%' }
 
   return (
-    <div className={`face-overlay ${detected ? 'face-overlay--detected' : ''} ${centered ? 'face-overlay--centered' : ''}`}>
+    <div className={`face-overlay ${detected ? 'face-overlay--detected' : ''} ${centered ? 'face-overlay--centered' : ''} ${scanning ? 'face-overlay--scanning' : ''}`}>
       <motion.div
         className="face-overlay__frame"
         animate={{
@@ -89,9 +89,13 @@ export function FaceOverlay({
           transition: background .35s ease, box-shadow .35s ease;
           z-index: 2;
         }
-        .face-overlay--centered .face-overlay__landmark {
+        .face-overlay--centered:not(.face-overlay--scanning) .face-overlay__landmark {
           background: #fff;
           box-shadow: 0 0 10px rgba(255,255,255,.72);
+        }
+        .face-overlay--scanning .face-overlay__landmark {
+          background: #d2eb0b;
+          box-shadow: 0 0 12px rgba(210,235,11,.78);
         }
       `}</style>
     </div>

@@ -37,11 +37,19 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         </motion.div>
 
         <motion.div
-          className="recommendations-screen__camera-card"
+          className="recommendations-screen__profile-row"
           initial={{ opacity: 0, x: 24 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         >
+          <div className="recommendations-screen__profile-item">
+            <span className="recommendations-screen__profile-label">Подтон</span>
+            <strong>{formatProfileValue(profile.undertone)}</strong>
+          </div>
+          <div className="recommendations-screen__profile-item">
+            <span className="recommendations-screen__profile-label">Тип кожи</span>
+            <strong>{formatProfileValue(profile.skinType)}</strong>
+          </div>
           <div className="recommendations-screen__camera">
             {hasCamera ? (
               <video
@@ -54,18 +62,6 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
             ) : (
               <div className="recommendations-screen__camera-fallback" />
             )}
-          </div>
-          <div className="recommendations-screen__profile">
-            <div className="recommendations-screen__profile-item">
-              <span className="recommendations-screen__profile-label">Подтон кожи</span>
-              <strong>{formatProfileValue(profile.undertone)}</strong>
-              <span>сбалансированный тон</span>
-            </div>
-            <div className="recommendations-screen__profile-item">
-              <span className="recommendations-screen__profile-label">Тип кожи</span>
-              <strong>{formatProfileValue(profile.skinType)}</strong>
-              <span>персональный уход</span>
-            </div>
           </div>
         </motion.div>
       </div>
@@ -116,7 +112,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
                     className="product-card__pie"
                     style={{ '--score': `${product.matchScore * 3.6}deg` } as React.CSSProperties}
                   >
-                    <div><strong>{product.matchScore}%</strong><span>совпадение</span></div>
+                    <div><strong>{product.matchScore}%</strong></div>
                   </div>
                   <span>Совпадение тона</span>
                 </div>
@@ -149,7 +145,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           content: '';
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse at 50% 112%, rgba(238,220,238,.42), transparent 52%);
+          background: radial-gradient(ellipse at 50% 112%, rgba(210,235,11,.34), transparent 52%);
           backdrop-filter: blur(24px);
           pointer-events: none;
         }
@@ -162,23 +158,18 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           gap: clamp(30px, 5vw, 84px);
           padding: 20px var(--space-lg) 0;
         }
-        .recommendations-screen__camera-card {
-          width: 100%;
-          max-width: 220px;
+        .recommendations-screen__profile-row {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 7px;
           justify-self: end;
-          padding: 7px;
-          border-radius: 25px;
-          background: rgba(255, 255, 255, 0.3);
-          border: 1px solid rgba(255, 255, 255, 0.64);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.8), 0 18px 46px rgba(72, 45, 78, 0.16);
-          backdrop-filter: blur(24px) saturate(145%);
-          -webkit-backdrop-filter: blur(24px) saturate(145%);
         }
         .recommendations-screen__camera {
           position: relative;
-          width: clamp(66px, 6.2vw, 86px);
-          height: clamp(66px, 6.2vw, 86px);
-          margin: 0 auto;
+          flex: 0 0 auto;
+          width: clamp(56px, 5vw, 72px);
+          height: clamp(56px, 5vw, 72px);
           overflow: hidden;
           border-radius: 50%;
           background: linear-gradient(135deg, #d6a6bb, #8d79ae);
@@ -218,21 +209,15 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           color: #171419;
           text-shadow: none;
         }
-        .recommendations-screen__profile {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 5px;
-          padding-top: 7px;
-        }
         .recommendations-screen__profile-item {
           display: flex;
           flex-direction: column;
           gap: 1px;
-          padding: 6px 8px;
+          padding: 7px 9px;
           min-width: 0;
           border-radius: 14px;
-          background: rgba(255,255,255,.3);
-          border: 1px solid rgba(255,255,255,.48);
+          background: rgba(255,255,255,.34);
+          border: 1px solid rgba(255,255,255,.58);
         }
         .recommendations-screen__profile-label {
           font-size: 10px;
@@ -243,11 +228,6 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         .recommendations-screen__profile-item strong {
           font-size: 13px;
           line-height: 1.15;
-          overflow-wrap: anywhere;
-        }
-        .recommendations-screen__profile-item > span:last-child {
-          font-size: 10px;
-          color: rgba(20,20,20,.48);
           overflow-wrap: anywhere;
         }
         .recommendations-screen__carousel {
@@ -414,7 +394,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           inset: 0;
           border-radius: inherit;
           padding: 7px;
-          background: conic-gradient(from 210deg, #ff7b58, #ee80c7, #9770e6, #72d39d var(--score), rgba(255,255,255,.38) 0);
+          background: conic-gradient(from 210deg, #d2eb0b var(--score), rgba(210,235,11,.2) 0);
           -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
           -webkit-mask-composite: xor;
           mask-composite: exclude;
@@ -434,13 +414,6 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
         .product-card__pie strong {
           font-size: 17px;
           line-height: 1;
-        }
-        .product-card__pie span {
-          margin-top: 2px;
-          font-size: 9px;
-          text-transform: uppercase;
-          letter-spacing: .08em;
-          color: rgba(20,20,20,.5);
         }
         .recommendations-screen__restart {
           position: absolute;
@@ -469,7 +442,7 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
             width: 64px;
             height: 64px;
           }
-          .recommendations-screen__profile {
+          .recommendations-screen__profile-item {
             display: none;
           }
           .product-card {
