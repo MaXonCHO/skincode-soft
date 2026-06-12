@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
-import { Logo } from '../components/Logo'
 import { SlideToScan } from '../components/SlideToScan'
-import heroPhoto from '../../photo/hero-block-new.png'
+import heroPhoto from '../../photo/new-hero-photo.png'
 
 interface HomeScreenProps {
   onStart: () => void
@@ -10,8 +9,6 @@ interface HomeScreenProps {
 export function HomeScreen({ onStart }: HomeScreenProps) {
   return (
     <div className="screen home-screen">
-      <Logo />
-
       <div className="home-screen__content">
         <motion.div
           className="home-screen__visual"
@@ -55,6 +52,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           </motion.div>
         </motion.div>
       </div>
+      <div className="home-screen__pastel-highlight" />
 
       <style>{`
         .home-screen__content {
@@ -63,13 +61,11 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           grid-template-columns: minmax(0, 52%) minmax(0, 48%);
           background: #fff;
         }
-        .home-screen > .logo {
-          filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,.32));
-        }
         .home-screen__visual {
           position: relative;
           min-width: 0;
           height: 100%;
+          background: #f6f1f3;
         }
         .home-screen__image-wrapper {
           position: absolute;
@@ -79,8 +75,10 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
         .home-screen__image {
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          object-position: center 38%;
+          object-fit: contain;
+          object-position: center bottom;
+          transform: scale(1.04);
+          transform-origin: center bottom;
         }
         .home-screen__text {
           align-self: center;
@@ -128,6 +126,24 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
         .home-screen__cta .slide-to-scan__fill {
           background: rgba(0,0,0,.08);
         }
+        .home-screen__pastel-highlight {
+          position: absolute;
+          z-index: 2;
+          left: 8%;
+          right: 8%;
+          bottom: -62px;
+          height: 118px;
+          border-radius: 50%;
+          background:
+            radial-gradient(circle at 10% 50%, rgba(114,211,157,.34), transparent 28%),
+            radial-gradient(circle at 32% 42%, rgba(255,123,88,.34), transparent 31%),
+            radial-gradient(circle at 52% 55%, rgba(255,171,79,.3), transparent 30%),
+            radial-gradient(circle at 72% 42%, rgba(231,123,211,.32), transparent 32%),
+            radial-gradient(circle at 92% 50%, rgba(151,112,230,.34), transparent 30%);
+          filter: blur(24px);
+          opacity: .68;
+          pointer-events: none;
+        }
 
         @media (orientation: portrait), (max-width: 900px) {
           .home-screen__content {
@@ -138,6 +154,7 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           .home-screen__visual {
             position: absolute;
             inset: 0;
+            background: #f6f1f3;
           }
           .home-screen__image-wrapper::after {
             content: '';
@@ -147,7 +164,9 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
             pointer-events: none;
           }
           .home-screen__image {
-            object-position: center 32%;
+            object-fit: cover;
+            object-position: center top;
+            transform: none;
           }
           .home-screen__text {
             position: absolute;
@@ -183,6 +202,13 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           }
           .home-screen__cta .slide-to-scan__fill {
             background: rgba(255,255,255,.12);
+          }
+          .home-screen__pastel-highlight {
+            left: -12%;
+            right: -12%;
+            bottom: -48px;
+            height: 100px;
+            opacity: .58;
           }
         }
       `}</style>

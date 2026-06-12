@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Logo } from '../components/Logo'
 import { FaceOverlay } from '../components/FaceOverlay'
 import { AnalysisProgress } from '../components/AnalysisProgress'
 import { useCameraStream } from '../hooks/useCameraStream'
@@ -102,8 +101,6 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           centered={faceCentered}
         />
       </div>
-
-      <Logo variant="light" />
 
       <div className="scan-screen__header">
         <h2 className="scan-screen__title">Сканирование кожи</h2>

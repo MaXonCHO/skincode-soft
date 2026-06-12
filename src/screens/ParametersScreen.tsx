@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Logo } from '../components/Logo'
 import { PodiumCarousel } from '../components/PodiumCarousel'
 import { FaceOverlay } from '../components/FaceOverlay'
 import { useCameraStream } from '../hooks/useCameraStream'
@@ -49,8 +48,6 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
         <div className="parameters-screen__overlay" />
         {hasCamera && <FaceOverlay showLandmarks={false} />}
       </div>
-
-      <Logo variant="light" />
 
       <div className="parameters-screen__header">
         <AnimatePresence mode="wait">

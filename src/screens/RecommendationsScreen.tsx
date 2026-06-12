@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Logo } from '../components/Logo'
 import { PodiumCarousel } from '../components/PodiumCarousel'
 import { SlideToScan } from '../components/SlideToScan'
 import { useCameraStream } from '../hooks/useCameraStream'
@@ -25,8 +24,6 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
 
   return (
     <div className="screen recommendations-screen beauty-gradient">
-      <Logo />
-
       <div className="recommendations-screen__top">
         <motion.div
           className="recommendations-screen__header"
@@ -160,9 +157,6 @@ export function RecommendationsScreen({ profile, products, onRestart }: Recommen
           background: rgba(255, 255, 255, 0.2);
           backdrop-filter: blur(42px);
           pointer-events: none;
-        }
-        .recommendations-screen > .logo {
-          display: none;
         }
         .recommendations-screen__top {
           position: relative;
