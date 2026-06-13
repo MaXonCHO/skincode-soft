@@ -5,8 +5,11 @@ import { HomeScreen } from './screens/HomeScreen'
 import { ScanScreen } from './screens/ScanScreen'
 import { ParametersScreen } from './screens/ParametersScreen'
 import { RecommendationsScreen } from './screens/RecommendationsScreen'
+import { SkinAnalysisHomeScreen } from './screens/SkinAnalysisHomeScreen'
+import { SkinAnalysisScanScreen } from './screens/SkinAnalysisScanScreen'
+import { SkinAnalysisResultsScreen } from './screens/SkinAnalysisResultsScreen'
 import { getRecommendations } from './utils/matching'
-import type { ScoredProduct, Screen, SkinProfile } from './types'
+import type { ScoredProduct, Screen, SkinAnalysisResult, SkinProfile } from './types'
 
 const pageTransition = {
   initial: { opacity: 0, scale: 0.992, filter: 'blur(5px)' },
@@ -22,6 +25,7 @@ export default function App() {
     skinType: 'Combination',
   })
   const [recommendations, setRecommendations] = useState<ScoredProduct[]>([])
+  const [skinAnalysis, setSkinAnalysis] = useState<SkinAnalysisResult | null>(null)
 
   const handleParametersComplete = useCallback((newProfile: SkinProfile) => {
     setProfile(newProfile)
@@ -34,6 +38,12 @@ export default function App() {
     setScreen('home')
     setProfile({ undertone: 'Neutral', skinType: 'Combination' })
     setRecommendations([])
+    setSkinAnalysis(null)
+  }, [])
+
+  const handleSkinAnalysisComplete = useCallback((result: SkinAnalysisResult) => {
+    setSkinAnalysis(result)
+    setScreen('skin-results')
   }, [])
 
   useEffect(() => {
@@ -48,12 +58,28 @@ export default function App() {
         <AnimatePresence mode="sync">
           {screen === 'home' && (
             <motion.div key="home" className="screen-wrapper" {...pageTransition}>
-              <HomeScreen onStart={() => setScreen('scan')} />
+              <HomeScreen
+                onStart={() => setScreen('scan')}
+                onSkinAnalysis={() => setScreen('skin-home')}
+              />
+            </motion.div>
+          )}
+          {screen === 'skin-home' && (
+            <motion.div key="skin-home" className="screen-wrapper" {...pageTransition}>
+              <SkinAnalysisHomeScreen
+                onStart={() => setScreen('skin-scan')}
+                onFoundationFlow={() => setScreen('scan')}
+              />
             </motion.div>
           )}
           {screen === 'scan' && (
             <motion.div key="scan" className="screen-wrapper" {...pageTransition}>
               <ScanScreen onComplete={() => setScreen('parameters')} />
+            </motion.div>
+          )}
+          {screen === 'skin-scan' && (
+            <motion.div key="skin-scan" className="screen-wrapper" {...pageTransition}>
+              <SkinAnalysisScanScreen onComplete={handleSkinAnalysisComplete} />
             </motion.div>
           )}
           {screen === 'parameters' && (
@@ -66,6 +92,14 @@ export default function App() {
               <RecommendationsScreen
                 profile={profile}
                 products={recommendations}
+                onRestart={handleRestart}
+              />
+            </motion.div>
+          )}
+          {screen === 'skin-results' && skinAnalysis && (
+            <motion.div key="skin-results" className="screen-wrapper" {...pageTransition}>
+              <SkinAnalysisResultsScreen
+                result={skinAnalysis}
                 onRestart={handleRestart}
               />
             </motion.div>

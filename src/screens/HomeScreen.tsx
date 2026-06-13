@@ -5,9 +5,10 @@ import heroPhoto from '../../photo/new-hero-photo.png'
 
 interface HomeScreenProps {
   onStart: () => void
+  onSkinAnalysis: () => void
 }
 
-export function HomeScreen({ onStart }: HomeScreenProps) {
+export function HomeScreen({ onStart, onSkinAnalysis }: HomeScreenProps) {
   return (
     <div className="screen home-screen">
       <Logo />
@@ -37,6 +38,13 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
               label="Начать подбор"
               completedLabel="Начинаем подбор..."
             />
+            <motion.button
+              className="btn-secondary home-screen__skin-button"
+              onClick={onSkinAnalysis}
+              whileTap={{ scale: .97 }}
+            >
+              Анализ состояния кожи
+            </motion.button>
           </motion.div>
         </motion.div>
 
@@ -113,6 +121,8 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
         }
         .home-screen__cta {
           width: min(100%, 520px);
+          display: grid;
+          gap: 18px;
         }
         .home-screen__cta .slide-to-scan {
           max-width: none;
@@ -136,6 +146,36 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
         }
         .home-screen__cta .slide-to-scan__fill {
           background: rgba(210,235,11,.18);
+        }
+        .home-screen__skin-button {
+          width: 100%;
+          color: #000;
+          border-color: rgba(0,0,0,.56);
+          background: rgba(255,255,255,.28);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.72), 0 12px 28px rgba(38,28,48,.1);
+        }
+        @media (max-height: 760px) and (orientation: landscape) {
+          .home-screen__text {
+            padding: clamp(34px, 5vw, 78px);
+          }
+          .home-screen__title {
+            font-size: clamp(42px, 4.5vw, 70px);
+            line-height: 1.02;
+            margin-bottom: 18px;
+          }
+          .home-screen__subtitle {
+            font-size: clamp(17px, 1.55vw, 24px);
+            line-height: 1.42;
+            margin-bottom: 26px;
+          }
+          .home-screen__cta {
+            gap: 12px;
+          }
+          .home-screen__skin-button {
+            padding-top: 14px;
+            padding-bottom: 14px;
+            font-size: 14px;
+          }
         }
         @media (orientation: portrait), (max-width: 900px) {
           .home-screen__content {
@@ -204,6 +244,9 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           }
           .home-screen__cta .slide-to-scan__fill {
             background: rgba(210,235,11,.34);
+          }
+          .home-screen__skin-button {
+            background: rgba(255,255,255,.34);
           }
         }
       `}</style>
