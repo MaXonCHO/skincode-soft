@@ -58,10 +58,27 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
 
       <style>{`
         .home-screen__content {
+          position: relative;
           flex: 1;
           display: grid;
           grid-template-columns: minmax(0, 48%) minmax(0, 52%);
-          background: #fff;
+          background:
+            radial-gradient(circle at 12% 86%, rgba(210,235,11,.2), transparent 25%),
+            radial-gradient(circle at 48% 4%, rgba(255,182,210,.18), transparent 28%),
+            #fff;
+        }
+        .home-screen__content::before {
+          content: '';
+          position: absolute;
+          z-index: 1;
+          width: clamp(140px, 18vw, 300px);
+          height: clamp(140px, 18vw, 300px);
+          left: -8%;
+          bottom: -12%;
+          border-radius: 50%;
+          background: rgba(210,235,11,.18);
+          filter: blur(38px);
+          pointer-events: none;
         }
         .home-screen > .logo {
           top: clamp(12px, 1.5vw, 22px);
@@ -89,6 +106,8 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           transform-origin: right bottom;
         }
         .home-screen__text {
+          position: relative;
+          z-index: 2;
           align-self: center;
           max-width: 760px;
           padding: clamp(48px, 7vw, 120px);
@@ -141,7 +160,10 @@ export function HomeScreen({ onStart }: HomeScreenProps) {
           .home-screen__content {
             display: block;
             position: relative;
-            background: #fff;
+            background:
+              radial-gradient(circle at 15% 82%, rgba(210,235,11,.22), transparent 30%),
+              radial-gradient(circle at 90% 10%, rgba(255,182,210,.18), transparent 30%),
+              #fff;
           }
           .home-screen__visual {
             position: absolute;

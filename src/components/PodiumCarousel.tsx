@@ -88,7 +88,7 @@ export function PodiumCarousel<T>({
         <motion.div
           className="podium-carousel__inner"
           animate={{ x: centerOffset }}
-          transition={{ type: 'spring', stiffness: 95, damping: 24, mass: 1.1 }}
+          transition={{ type: 'spring', stiffness: 76, damping: 26, mass: 1.18 }}
         >
           {items.map((item, index) => {
             const distance = Math.abs(index - selectedIndex)
@@ -104,7 +104,11 @@ export function PodiumCarousel<T>({
                 className="podium-carousel__item"
                 style={{ width: cardWidth, marginRight: cardGap }}
                 animate={{ scale, opacity, y: translateY }}
-                transition={{ type: 'spring', stiffness: 105, damping: 25, mass: 1.05 }}
+                transition={{
+                  scale: { type: 'spring', stiffness: 82, damping: 27, mass: 1.12 },
+                  y: { type: 'spring', stiffness: 82, damping: 27, mass: 1.12 },
+                  opacity: { duration: .46, ease: [0.22, 1, 0.36, 1] },
+                }}
                 onClick={() => onSelect(index)}
                 aria-label={`Выбрать ${getItemLabel?.(item) ?? `вариант ${index + 1}`}`}
                 aria-pressed={isCenter}

@@ -178,6 +178,17 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           );
           pointer-events: none;
         }
+        .scan-screen__camera::after {
+          content: '';
+          position: absolute;
+          z-index: 3;
+          inset: 0;
+          background:
+            radial-gradient(circle at 8% 88%, rgba(210,235,11,.12), transparent 24%),
+            radial-gradient(circle at 92% 12%, rgba(255,151,196,.1), transparent 25%);
+          mix-blend-mode: screen;
+          pointer-events: none;
+        }
         .scan-screen__fallback {
           width: 100%;
           height: 100%;
@@ -264,8 +275,8 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           box-shadow: 0 0 0 5px rgba(255,255,255,.14);
         }
         .scan-screen__guidance--ready .scan-screen__guidance-dot {
-          background: #fff;
-          box-shadow: 0 0 0 5px rgba(255,255,255,.2);
+          background: #d2eb0b;
+          box-shadow: 0 0 0 5px rgba(210,235,11,.2), 0 0 22px rgba(210,235,11,.38);
         }
         .scan-screen__hold {
           position: absolute;
@@ -281,7 +292,7 @@ export function ScanScreen({ onComplete }: ScanScreenProps) {
           display: block;
           height: 100%;
           border-radius: inherit;
-          background: #fff;
+          background: #d2eb0b;
           transition: width .08s linear;
         }
         .scan-screen__error {

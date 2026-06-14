@@ -860,14 +860,14 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
             z-index: 2;
             top: -14px;
             padding: 10px 0 12px;
-            background: rgba(255,255,255,.96);
+            background: transparent;
           }
           .catalog-screen__menu-actions {
             position: sticky;
             z-index: 2;
             bottom: -18px;
             padding: 12px 0 18px;
-            background: rgba(255,255,255,.96);
+            background: transparent;
           }
           .catalog-screen__filter select {
             min-height: 50px;

@@ -11,10 +11,10 @@ import { getRecommendations } from './utils/matching'
 import type { ScoredProduct, Screen, SkinProfile } from './types'
 
 const pageTransition = {
-  initial: { opacity: 0, scale: 0.992, filter: 'blur(5px)' },
-  animate: { opacity: 1, scale: 1, filter: 'blur(0px)' },
-  exit: { opacity: 0, scale: 1.006, filter: 'blur(4px)' },
-  transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+  initial: { opacity: 0, scale: 0.995, y: 8 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 1.003, y: -5 },
+  transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
 }
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
   return (
     <div className="app-container">
       <div className="app-frame">
-        <AnimatePresence mode="sync">
+        <AnimatePresence mode="sync" initial={false}>
           {screen === 'home' && (
             <motion.div key="home" className="screen-wrapper" {...pageTransition}>
               <HomeScreen onStart={() => setScreen('scan')} />

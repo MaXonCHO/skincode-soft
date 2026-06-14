@@ -184,6 +184,16 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           );
           pointer-events: none;
         }
+        .parameters-screen__camera::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 10% 86%, rgba(210,235,11,.14), transparent 25%),
+            radial-gradient(circle at 90% 16%, rgba(255,151,196,.12), transparent 26%);
+          mix-blend-mode: screen;
+          pointer-events: none;
+        }
         .parameters-screen__fallback {
           width: 100%;
           height: 100%;
@@ -221,7 +231,10 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           height: clamp(280px, 46vh, 430px);
           border-radius: 50%;
           transform: translateX(-50%);
-          background: radial-gradient(ellipse at center, rgba(255,255,255,.48) 0%, rgba(255,255,255,.24) 42%, transparent 72%);
+          background:
+            radial-gradient(ellipse at 35% 55%, rgba(210,235,11,.2), transparent 35%),
+            radial-gradient(ellipse at 68% 48%, rgba(255,168,212,.18), transparent 38%),
+            radial-gradient(ellipse at center, rgba(255,255,255,.48) 0%, rgba(255,255,255,.24) 42%, transparent 72%);
           filter: blur(24px);
           pointer-events: none;
         }
@@ -277,11 +290,15 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           text-align: center;
           border: 1px solid rgba(255,255,255,.42);
           box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 12px 30px rgba(0,0,0,.14);
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          transition:
+            background-color .55s cubic-bezier(.22,1,.36,1),
+            border-color .55s cubic-bezier(.22,1,.36,1),
+            box-shadow .55s cubic-bezier(.22,1,.36,1);
         }
         .option-card--center {
           border-color: #fff;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 16px 38px rgba(0,0,0,.24), 0 0 0 1px rgba(255,255,255,.22);
+          background: rgba(255,255,255,.3);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 16px 38px rgba(0,0,0,.24), 0 0 0 1px rgba(210,235,11,.28);
         }
         .option-card__image-frame {
           width: 100%;
@@ -330,7 +347,7 @@ export function ParametersScreen({ onComplete }: ParametersScreenProps) {
           border-color: rgba(255,255,255,.58);
         }
         .parameters-screen .podium-carousel__dot--active::before {
-          border-color: #fff;
+          border-color: #d2eb0b;
         }
       `}</style>
     </div>
