@@ -3,8 +3,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { getCatalogMatches } from '../utils/catalog'
 import { formatPrice, formatProfileValue } from '../utils/matching'
 import type { SkinProfile } from '../types'
+import heroPhoto from '../../photo/hero-block-new.png'
+import productOne from '../../photo/product-1.png'
+import productTwo from '../../photo/product-2.png'
+import productThree from '../../photo/product-3.png'
+import productFour from '../../photo/product-4.png'
 
 type PriceSort = 'price-asc' | 'price-desc'
+const productImages = [productOne, productTwo, productThree, productFour]
 
 interface CatalogScreenProps {
   profile: SkinProfile
@@ -72,6 +78,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
 
       <header className="catalog-screen__header">
         <motion.div
+          className="catalog-screen__heading"
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: .55, ease: [0.22, 1, 0.36, 1] }}
@@ -79,6 +86,10 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           <span className="catalog-screen__eyebrow">Персональная коллекция</span>
           <h1>Все оттенки,<br />которые тебе подходят</h1>
         </motion.div>
+
+        <div className="catalog-screen__hero-photo" aria-hidden="true">
+          <img src={heroPhoto} alt="" />
+        </div>
 
         <div className="catalog-screen__profile">
           <div>
@@ -162,7 +173,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         </div>
 
         <section className="catalog-screen__grid" aria-live="polite">
-          {visibleProducts.map((product) => (
+          {visibleProducts.map((product, index) => (
             <a
               key={product.id}
               className="catalog-product glass"
@@ -177,12 +188,14 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
               </div>
 
               <div className="catalog-product__swatch">
-                <span style={{ background: rgbColor(product.shade.rgb) }} />
+                <span className="catalog-product__shade-bg" style={{ background: rgbColor(product.shade.rgb) }} />
                 <img
-                  src={product.shade.swatchUrl}
-                  alt={`Оттенок ${product.shade.name}`}
+                  className="catalog-product__jar"
+                  src={productImages[index % productImages.length]}
+                  alt=""
                   loading="lazy"
                 />
+                <span className="catalog-product__shade-dot" style={{ background: rgbColor(product.shade.rgb) }} />
               </div>
 
               <div className="catalog-product__body">
@@ -250,10 +263,30 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         .catalog-screen__header {
           min-height: 300px;
           display: grid;
-          grid-template-columns: 1fr auto;
+          grid-template-columns: minmax(0, 1fr) 180px auto;
           align-items: center;
           gap: 32px;
           padding: 32px 0 24px;
+        }
+        .catalog-screen__heading {
+          position: relative;
+          z-index: 2;
+        }
+        .catalog-screen__hero-photo {
+          align-self: stretch;
+          min-height: 230px;
+          overflow: hidden;
+          border: 1px solid rgba(255,255,255,.76);
+          border-radius: 88px;
+          background: rgba(255,255,255,.35);
+          box-shadow: inset 0 1px 0 #fff, 0 18px 42px rgba(62,36,72,.12);
+        }
+        .catalog-screen__hero-photo img {
+          width: 100%;
+          height: 100%;
+          display: block;
+          object-fit: cover;
+          object-position: center;
         }
         .catalog-screen__control,
         .catalog-screen__reset,
@@ -484,19 +517,44 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           border-radius: 20px;
           background: rgba(255,255,255,.32);
         }
-        .catalog-product__swatch span,
-        .catalog-product__swatch img {
+        .catalog-product__shade-bg {
           position: absolute;
           inset: 0;
           width: 100%;
           height: 100%;
+          opacity: .5;
         }
-        .catalog-product__swatch img {
-          object-fit: cover;
+        .catalog-product__shade-bg::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(145deg, rgba(255,255,255,.72), transparent 52%, rgba(255,255,255,.18));
+        }
+        .catalog-product__jar {
+          position: absolute;
+          z-index: 2;
+          left: 50%;
+          bottom: -24px;
+          width: 150px;
+          height: 190px;
+          object-fit: contain;
+          transform: translateX(-50%) rotate(3deg);
+          filter: drop-shadow(0 18px 14px rgba(52,30,57,.2));
           transition: transform .35s cubic-bezier(.22,1,.36,1);
         }
-        .catalog-product:hover .catalog-product__swatch img {
-          transform: scale(1.035);
+        .catalog-product:hover .catalog-product__jar {
+          transform: translateX(-50%) rotate(1deg) scale(1.04);
+        }
+        .catalog-product__shade-dot {
+          position: absolute;
+          z-index: 3;
+          right: 10px;
+          bottom: 10px;
+          width: 24px;
+          height: 24px;
+          border: 3px solid rgba(255,255,255,.9);
+          border-radius: 50%;
+          box-shadow: 0 5px 12px rgba(40,20,45,.16);
         }
         .catalog-product__body h2 {
           min-height: 44px;
@@ -561,6 +619,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           .catalog-screen__header {
             grid-template-columns: 1fr;
           }
+          .catalog-screen__hero-photo {
+            display: none;
+          }
           .catalog-screen__profile {
             padding-top: 0;
           }
@@ -569,38 +630,102 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           }
         }
         @media (max-width: 760px) {
+          .catalog-screen {
+            padding-bottom: env(safe-area-inset-bottom);
+          }
+          .catalog-screen__glow--pink {
+            width: 110vw;
+            height: 110vw;
+            top: -45vw;
+            right: -55vw;
+          }
+          .catalog-screen__glow--lime {
+            width: 120vw;
+            height: 80vw;
+            left: -55vw;
+            bottom: -30vw;
+          }
           .catalog-screen__header,
           .catalog-screen__main {
-            width: min(100% - 24px, 1480px);
+            width: min(100% - 28px, 1480px);
           }
           .catalog-screen__header {
             min-height: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 24px;
-            padding: 20px 0 28px;
+            display: grid;
+            grid-template-columns: 1fr 108px;
+            align-items: end;
+            gap: 16px 10px;
+            padding: max(18px, env(safe-area-inset-top)) 0 22px;
+          }
+          .catalog-screen__heading {
+            grid-column: 1 / -1;
+          }
+          .catalog-screen__eyebrow {
+            margin-bottom: 9px;
+            font-size: 9px;
           }
           .catalog-screen__header h1 {
-            font-size: clamp(42px, 13vw, 66px);
+            max-width: 360px;
+            font-size: clamp(38px, 11.5vw, 54px);
+            line-height: .98;
+          }
+          .catalog-screen__hero-photo {
+            display: block;
+            grid-column: 2;
+            grid-row: 2;
+            min-height: 112px;
+            height: 112px;
+            border-radius: 28px;
+          }
+          .catalog-screen__hero-photo img {
+            object-position: center 35%;
           }
           .catalog-screen__profile {
+            grid-column: 1;
+            grid-row: 2;
             width: 100%;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
           }
           .catalog-screen__profile div {
             min-width: 0;
             flex: 1;
+            padding: 9px 11px;
+            border-radius: 14px;
+          }
+          .catalog-screen__profile span {
+            font-size: 8px;
+          }
+          .catalog-screen__profile strong {
+            font-size: 12px;
           }
           .catalog-screen__controls {
             position: sticky;
+            top: max(8px, env(safe-area-inset-top));
             width: 100%;
+            padding: 5px;
+            border: 1px solid rgba(255,255,255,.72);
+            border-radius: 999px;
+            background: rgba(255,255,255,.58);
+            backdrop-filter: blur(24px) saturate(145%);
+            -webkit-backdrop-filter: blur(24px) saturate(145%);
+            box-shadow: inset 0 1px 0 #fff, 0 14px 32px rgba(62,36,72,.12);
           }
           .catalog-screen__control-wrap {
             flex: 1;
           }
           .catalog-screen__control {
+            min-height: 46px;
+            border-color: transparent;
+            background: transparent;
+            box-shadow: none;
             width: 100%;
             justify-content: center;
+          }
+          .catalog-screen__control--active {
+            border-color: rgba(23,20,25,.12);
+            background: rgba(255,255,255,.72);
           }
           .catalog-screen__menu {
             position: fixed;
@@ -610,7 +735,19 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
             left: 12px;
             width: auto;
             grid-template-columns: 1fr;
+            max-height: min(72dvh, 560px);
+            overflow-y: auto;
+            padding: 18px;
+            border-radius: 28px;
             transform-origin: bottom center;
+          }
+          .catalog-screen__filter select {
+            min-height: 50px;
+            font-size: 16px;
+          }
+          .catalog-screen__reset,
+          .catalog-screen__sort-option {
+            min-height: 50px;
           }
           .catalog-screen__menu--sort {
             width: auto;
@@ -618,19 +755,92 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           .catalog-screen__summary {
             align-items: flex-start;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
+            padding: 22px 3px 14px;
           }
           .catalog-screen__grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+          .catalog-product {
+            display: grid;
+            grid-template-columns: 112px minmax(0, 1fr);
+            grid-template-rows: auto 1fr;
+            gap: 0 14px;
+            min-height: 190px;
+            padding: 12px;
+            border-radius: 24px;
+          }
+          .catalog-product__top {
+            grid-column: 1 / -1;
+            padding: 1px 2px 9px;
+          }
+          .catalog-product__swatch {
+            grid-column: 1;
+            grid-row: 2;
+            height: 142px;
+            margin: 0;
+            border-radius: 18px;
+          }
+          .catalog-product__jar {
+            bottom: -18px;
+            width: 125px;
+            height: 165px;
+          }
+          .catalog-product__shade-dot {
+            right: 7px;
+            bottom: 7px;
+            width: 20px;
+            height: 20px;
+          }
+          .catalog-product__body {
+            grid-column: 2;
+            grid-row: 2;
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+          }
+          .catalog-product__body h2 {
+            min-height: 0;
+            font-size: 17px;
+            line-height: 1.16;
+          }
+          .catalog-product__shade {
+            margin: 6px 0 9px;
+          }
+          .catalog-product__tags {
+            min-height: 0;
+          }
+          .catalog-product__tags span {
+            padding: 4px 6px;
+            font-size: 8px;
+          }
+          .catalog-product__footer {
+            margin-top: auto;
+            padding-top: 10px;
+          }
+          .catalog-product__footer span {
+            font-size: 0;
+          }
+          .catalog-product__footer span::after {
+            content: 'Открыть ↗';
+            font-size: 11px;
           }
         }
         @media (max-width: 480px) {
-          .catalog-screen__grid {
-            grid-template-columns: 1fr;
+          .catalog-screen__header h1 {
+            font-size: clamp(36px, 11vw, 48px);
+          }
+          .catalog-screen__hero-photo {
+            width: 100px;
+            justify-self: end;
+          }
+          .catalog-product {
+            grid-template-columns: 102px minmax(0, 1fr);
+            gap: 0 12px;
           }
           .catalog-product__swatch {
-            height: 180px;
+            height: 136px;
           }
         }
       `}</style>
