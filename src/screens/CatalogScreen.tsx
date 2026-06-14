@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { getCatalogMatches } from '../utils/catalog'
 import { formatPrice, formatProfileValue } from '../utils/matching'
 import type { SkinProfile } from '../types'
-import heroPhoto from '../../photo/hero-block-new.png'
 import productOne from '../../photo/product-1.png'
 import productTwo from '../../photo/product-2.png'
 import productThree from '../../photo/product-3.png'
@@ -87,10 +86,6 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           <h1>Все оттенки,<br />которые тебе подходят</h1>
         </motion.div>
 
-        <div className="catalog-screen__hero-photo" aria-hidden="true">
-          <img src={heroPhoto} alt="" />
-        </div>
-
         <div className="catalog-screen__profile">
           <div>
             <span>Подтон</span>
@@ -104,6 +99,20 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
       </header>
 
       <main className="catalog-screen__main">
+        <AnimatePresence>
+          {openMenu && (
+            <motion.button
+              type="button"
+              className="catalog-screen__menu-backdrop"
+              aria-label="Закрыть меню"
+              onClick={() => setOpenMenu(null)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+          )}
+        </AnimatePresence>
+
         <div className="catalog-screen__controls">
           <div className="catalog-screen__control-wrap">
             <button
@@ -127,12 +136,17 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
                   exit={{ opacity: 0, y: -6, scale: .98 }}
                   transition={{ duration: .2 }}
                 >
+                  <div className="catalog-screen__menu-header">
+                    <strong>Фильтр</strong>
+                    <button type="button" onClick={() => setOpenMenu(null)} aria-label="Закрыть фильтры">×</button>
+                  </div>
                   <FilterSelect label="Текстура" value={texture} onChange={setTexture} options={textures} />
                   <FilterSelect label="Финиш" value={finish} onChange={setFinish} options={finishes} />
                   <FilterSelect label="Бренд" value={brand} onChange={setBrand} options={brands} />
-                  <button type="button" className="catalog-screen__reset" onClick={resetFilters}>
-                    Сбросить фильтры
-                  </button>
+                  <div className="catalog-screen__menu-actions">
+                    <button type="button" className="catalog-screen__reset" onClick={resetFilters}>Сбросить</button>
+                    <button type="button" className="catalog-screen__apply" onClick={() => setOpenMenu(null)}>Применить</button>
+                  </div>
                 </motion.section>
               )}
             </AnimatePresence>
@@ -159,13 +173,43 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
                   exit={{ opacity: 0, y: -6, scale: .98 }}
                   transition={{ duration: .2 }}
                 >
-                  <SortButton label="Сначала дешевле" value="price-asc" selected={priceSort} onSelect={setPriceSort} />
-                  <SortButton label="Сначала дороже" value="price-desc" selected={priceSort} onSelect={setPriceSort} />
+                  <div className="catalog-screen__menu-header">
+                    <strong>Сортировка</strong>
+                    <button type="button" onClick={() => setOpenMenu(null)} aria-label="Закрыть сортировку">×</button>
+                  </div>
+                  <SortButton label="Сначала дешевле" value="price-asc" selected={priceSort} onSelect={(value) => {
+                    setPriceSort(value)
+                    setOpenMenu(null)
+                  }} />
+                  <SortButton label="Сначала дороже" value="price-desc" selected={priceSort} onSelect={(value) => {
+                    setPriceSort(value)
+                    setOpenMenu(null)
+                  }} />
                 </motion.section>
               )}
             </AnimatePresence>
           </div>
         </div>
+
+        {activeFilterCount > 0 && (
+          <div className="catalog-screen__active-filters" aria-label="Выбранные фильтры">
+            {texture !== 'all' && (
+              <button type="button" onClick={() => setTexture('all')}>
+                {texture}<span aria-hidden="true">×</span>
+              </button>
+            )}
+            {finish !== 'all' && (
+              <button type="button" onClick={() => setFinish('all')}>
+                {finish}<span aria-hidden="true">×</span>
+              </button>
+            )}
+            {brand !== 'all' && (
+              <button type="button" onClick={() => setBrand('all')}>
+                {brand}<span aria-hidden="true">×</span>
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="catalog-screen__summary">
           <p><strong>{visibleProducts.length}</strong> подходящих средств</p>
@@ -263,7 +307,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         .catalog-screen__header {
           min-height: 300px;
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 180px auto;
+          grid-template-columns: minmax(0, 1fr) auto;
           align-items: center;
           gap: 32px;
           padding: 32px 0 24px;
@@ -272,24 +316,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           position: relative;
           z-index: 2;
         }
-        .catalog-screen__hero-photo {
-          align-self: stretch;
-          min-height: 230px;
-          overflow: hidden;
-          border: 1px solid rgba(255,255,255,.76);
-          border-radius: 88px;
-          background: rgba(255,255,255,.35);
-          box-shadow: inset 0 1px 0 #fff, 0 18px 42px rgba(62,36,72,.12);
-        }
-        .catalog-screen__hero-photo img {
-          width: 100%;
-          height: 100%;
-          display: block;
-          object-fit: cover;
-          object-position: center;
-        }
         .catalog-screen__control,
         .catalog-screen__reset,
+        .catalog-screen__apply,
         .catalog-screen__empty button {
           min-height: 44px;
           border: 1px solid rgba(23,20,25,.2);
@@ -305,6 +334,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         }
         .catalog-screen__control:hover,
         .catalog-screen__reset:hover,
+        .catalog-screen__apply:hover,
         .catalog-screen__empty button:hover {
           border-color: #171419;
           background: rgba(255,255,255,.7);
@@ -368,6 +398,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         .catalog-screen__control-wrap {
           position: relative;
         }
+        .catalog-screen__menu-backdrop {
+          display: none;
+        }
         .catalog-screen__control {
           display: flex;
           align-items: center;
@@ -388,6 +421,37 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           background: #d2eb0b;
           font-size: 10px;
         }
+        .catalog-screen__active-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          padding-top: 12px;
+        }
+        .catalog-screen__active-filters button {
+          min-height: 36px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 0 10px 0 13px;
+          border: 1px solid rgba(23,20,25,.13);
+          border-radius: 999px;
+          background: rgba(255,255,255,.72);
+          color: #171419;
+          cursor: pointer;
+          font: inherit;
+          font-size: 11px;
+          text-transform: capitalize;
+        }
+        .catalog-screen__active-filters span {
+          display: grid;
+          width: 18px;
+          height: 18px;
+          place-items: center;
+          border-radius: 50%;
+          background: rgba(23,20,25,.08);
+          font-size: 14px;
+          line-height: 1;
+        }
         .catalog-screen__menu {
           position: absolute;
           top: calc(100% + 10px);
@@ -407,9 +471,38 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           flex-direction: column;
           gap: 5px;
         }
-        .catalog-screen__menu .catalog-screen__filter:last-of-type,
-        .catalog-screen__menu .catalog-screen__reset {
+        .catalog-screen__menu-header,
+        .catalog-screen__menu-actions,
+        .catalog-screen__menu .catalog-screen__filter:last-of-type {
           grid-column: 1 / -1;
+        }
+        .catalog-screen__menu-header {
+          display: none;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+        }
+        .catalog-screen__menu-header strong {
+          font-size: 20px;
+          letter-spacing: -.02em;
+        }
+        .catalog-screen__menu-header button {
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(23,20,25,.13);
+          border-radius: 50%;
+          background: #fff;
+          color: #171419;
+          cursor: pointer;
+          font-size: 25px;
+          line-height: 1;
+        }
+        .catalog-screen__menu-actions {
+          display: flex;
+          gap: 8px;
+        }
+        .catalog-screen__menu-actions > button {
+          flex: 1;
         }
         .catalog-screen__filter select {
           width: 100%;
@@ -429,6 +522,12 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         }
         .catalog-screen__reset {
           padding: 0 18px;
+        }
+        .catalog-screen__apply {
+          padding: 0 18px;
+          border-color: #171419;
+          background: #171419;
+          color: #fff;
         }
         .catalog-screen__sort-option {
           min-height: 44px;
@@ -512,7 +611,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           position: relative;
           height: 150px;
           margin: 13px 0;
-          overflow: hidden;
+          overflow: visible;
           border: 1px solid rgba(255,255,255,.72);
           border-radius: 20px;
           background: rgba(255,255,255,.32);
@@ -534,9 +633,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           position: absolute;
           z-index: 2;
           left: 50%;
-          bottom: -24px;
-          width: 150px;
-          height: 190px;
+          bottom: -32px;
+          width: 190px;
+          height: 220px;
           object-fit: contain;
           transform: translateX(-50%) rotate(3deg);
           filter: drop-shadow(0 18px 14px rgba(52,30,57,.2));
@@ -619,9 +718,6 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           .catalog-screen__header {
             grid-template-columns: 1fr;
           }
-          .catalog-screen__hero-photo {
-            display: none;
-          }
           .catalog-screen__profile {
             padding-top: 0;
           }
@@ -651,10 +747,10 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           }
           .catalog-screen__header {
             min-height: auto;
-            display: grid;
-            grid-template-columns: 1fr 108px;
-            align-items: end;
-            gap: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
             padding: max(18px, env(safe-area-inset-top)) 0 22px;
           }
           .catalog-screen__heading {
@@ -669,22 +765,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
             font-size: clamp(38px, 11.5vw, 54px);
             line-height: .98;
           }
-          .catalog-screen__hero-photo {
-            display: block;
-            grid-column: 2;
-            grid-row: 2;
-            min-height: 112px;
-            height: 112px;
-            border-radius: 28px;
-          }
-          .catalog-screen__hero-photo img {
-            object-position: center 35%;
-          }
           .catalog-screen__profile {
-            grid-column: 1;
-            grid-row: 2;
             width: 100%;
-            flex-direction: column;
+            flex-direction: row;
             gap: 6px;
             padding: 0;
           }
@@ -702,6 +785,7 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           }
           .catalog-screen__controls {
             position: sticky;
+            z-index: 52;
             top: max(8px, env(safe-area-inset-top));
             width: 100%;
             padding: 5px;
@@ -730,22 +814,69 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
           .catalog-screen__menu {
             position: fixed;
             top: auto;
-            right: 12px;
-            bottom: 12px;
-            left: 12px;
+            z-index: 51;
+            right: 0;
+            bottom: 0;
+            left: 0;
             width: auto;
             grid-template-columns: 1fr;
-            max-height: min(72dvh, 560px);
+            max-height: min(78dvh, 620px);
             overflow-y: auto;
-            padding: 18px;
-            border-radius: 28px;
+            padding: 14px 18px calc(18px + env(safe-area-inset-bottom));
+            border: 1px solid rgba(23,20,25,.08);
+            border-radius: 28px 28px 0 0;
+            background: #fdfcfb;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            box-shadow: 0 -18px 60px rgba(42,22,48,.22);
             transform-origin: bottom center;
+          }
+          .catalog-screen__active-filters {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 10px 1px 2px;
+            scrollbar-width: none;
+          }
+          .catalog-screen__active-filters::-webkit-scrollbar {
+            display: none;
+          }
+          .catalog-screen__active-filters button {
+            min-height: 40px;
+            flex: 0 0 auto;
+          }
+          .catalog-screen__menu-backdrop {
+            position: fixed;
+            z-index: 50;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: rgba(23,20,25,.38);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+          }
+          .catalog-screen__menu-header {
+            display: flex;
+            position: sticky;
+            z-index: 2;
+            top: -14px;
+            padding: 10px 0 12px;
+            background: #fdfcfb;
+          }
+          .catalog-screen__menu-actions {
+            position: sticky;
+            z-index: 2;
+            bottom: calc(-18px - env(safe-area-inset-bottom));
+            padding: 12px 0 calc(18px + env(safe-area-inset-bottom));
+            background: #fdfcfb;
           }
           .catalog-screen__filter select {
             min-height: 50px;
             font-size: 16px;
           }
           .catalog-screen__reset,
+          .catalog-screen__apply,
           .catalog-screen__sort-option {
             min-height: 50px;
           }
@@ -783,9 +914,9 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
             border-radius: 18px;
           }
           .catalog-product__jar {
-            bottom: -18px;
-            width: 125px;
-            height: 165px;
+            bottom: -28px;
+            width: 150px;
+            height: 185px;
           }
           .catalog-product__shade-dot {
             right: 7px;
@@ -830,10 +961,6 @@ export function CatalogScreen({ profile }: CatalogScreenProps) {
         @media (max-width: 480px) {
           .catalog-screen__header h1 {
             font-size: clamp(36px, 11vw, 48px);
-          }
-          .catalog-screen__hero-photo {
-            width: 100px;
-            justify-self: end;
           }
           .catalog-product {
             grid-template-columns: 102px minmax(0, 1fr);
