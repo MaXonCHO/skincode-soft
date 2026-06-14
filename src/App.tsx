@@ -17,6 +17,20 @@ const pageTransition = {
   transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
 }
 
+const scanPageTransition = {
+  initial: { opacity: 0, scale: 0.998, y: 4 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 1, y: 0 },
+  transition: { duration: 0.78, ease: [0.22, 1, 0.36, 1] },
+}
+
+const parametersPageTransition = {
+  initial: { opacity: 0, scale: 1.002, y: 3 },
+  animate: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 1, y: -3 },
+  transition: { duration: 0.88, ease: [0.22, 1, 0.36, 1] },
+}
+
 export default function App() {
   const catalogProfile = getCatalogProfile()
   const [screen, setScreen] = useState<Screen>(catalogProfile ? 'catalog' : 'home')
@@ -55,12 +69,12 @@ export default function App() {
             </motion.div>
           )}
           {screen === 'scan' && (
-            <motion.div key="scan" className="screen-wrapper" {...pageTransition}>
+            <motion.div key="scan" className="screen-wrapper" {...scanPageTransition}>
               <ScanScreen onComplete={() => setScreen('parameters')} />
             </motion.div>
           )}
           {screen === 'parameters' && (
-            <motion.div key="parameters" className="screen-wrapper" {...pageTransition}>
+            <motion.div key="parameters" className="screen-wrapper" {...parametersPageTransition}>
               <ParametersScreen onComplete={handleParametersComplete} />
             </motion.div>
           )}

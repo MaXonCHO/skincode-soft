@@ -39,10 +39,8 @@ export function getCatalogMatches(profile: SkinProfile): CatalogMatch[] {
 export function getPriceBandRecommendations(profile: SkinProfile): ScoredProduct[] {
   const matches = getCatalogMatches(profile)
   const bands = [
-    [0, 700],
-    [700, 1500],
-    [1500, 2700],
-    [2700, 5000],
+    [0, 1500],
+    [1500, 5000],
     [5000, Number.POSITIVE_INFINITY],
   ]
 
@@ -51,11 +49,11 @@ export function getPriceBandRecommendations(profile: SkinProfile): ScoredProduct
     .filter((product): product is CatalogMatch => Boolean(product))
 
   for (const product of matches) {
-    if (selected.length >= 5) break
+    if (selected.length >= 3) break
     if (!selected.some((item) => item.id === product.id)) selected.push(product)
   }
 
-  return selected.slice(0, 5).map(toScoredProduct)
+  return selected.slice(0, 3).map(toScoredProduct)
 }
 
 export function getCatalogUrl(profile: SkinProfile): string {
